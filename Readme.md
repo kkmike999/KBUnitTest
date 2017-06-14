@@ -1,4 +1,4 @@
-![https://www.bintray.com/docs/images/bintray_badge_color.png](https://bintray.com/kkmike999/maven/kb_unit_test?source=watch)
+[![](https://www.bintray.com/docs/images/bintray_badge_color.png)](https://bintray.com/kkmike999/maven/kb_unit_test?source=watch)
 
 ## KBUnitTest介绍
 
@@ -27,6 +27,22 @@ allprojects {
 ```
 dependencies {
     testCompile 'net.kb.test:kb_unit_test:0.2.1'
+}
+```
+
+### exclude
+
+如果KBUnitTest引用的第三方库，与你工程引用的第三方库有版本不同，会引起冲突。这时，需要`compile`的时候传递依赖：
+
+(例如，工程引用了`org.jsoup:jsoup`和`com.android.support:support-annotations`)
+```
+dependencies {
+    testCompile ('net.kb.test:kb_unit_test:0.2.1'){
+        transitive = true
+
+        exclude module: 'jsoup', group: 'org.jsoup'
+        exclude module: 'support-annotations', group: 'com.android.support'
+    }
 }
 ```
 
