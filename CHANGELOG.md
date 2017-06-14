@@ -1,7 +1,8 @@
-## 0.2.1 内测版本
+## 0.2.2 内测版本
 
 - 修复ShadowResource寻找
 - 修复ShadowCursor.getString() null问题
+- 修复插入数据库boolean类型问题
 
 ## 0.2 内测版本
 
