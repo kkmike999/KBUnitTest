@@ -65,221 +65,19 @@ public class SQLiteDatabaseTest extends KBCase {
 
 ### GreenDAO
 
-[GreenDAO github](https://github.com/greenrobot/greenDAO)
-
-User：
-```
-@Entity
-public class User {
-
-    // 不能用int
-    @Id(autoincrement = true)
-    private Long id;
-
-    @Unique
-    private int uid;
-
-    private String name;
-
-    public User(int uid, String name) {
-        this.uid = uid;
-        this.name = name;
-    }
-}
-```
-
-单元测试：
-```
-public class GreenDAOTest extends GreenDAOCase {
-
-    private DaoSession mDaoSession;
-    private UserDao    mUserDAO;
-
-    @Before
-    public void setUp() throws Exception {
-        Context context = getContext();
-
-        // 创建数据库 build/test.db，数据库名就是路径
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "test.db", null);
-        // 获取可写数据库
-        SQLiteDatabase db = helper.getWritableDatabase();
-
-        // 获取数据库对象
-        DaoMaster daoMaster = new DaoMaster(db);
-        // 获取Dao对象管理者
-        mDaoSession = daoMaster.newSession();
-
-        mUserDAO = mDaoSession.getUserDao();
-    }
-
-    @Test
-    public void testInsert() {
-        User user = new User(uid, name);
-
-        mUserDAO.insert(user);
-
-        List<User> users = mUserDAO.loadAll();
-
-        Assert.assertEquals(1, users.size());
-
-        Assert.assertEquals(1, users.get(0).getUid());
-        Assert.assertEquals("kk1", users.get(0).getName());
-    }
-}
-```
-
-[GreenDAO单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/greenDAO/GreenDAOTest.java)
+[GreenDAO单元测试示例](readme/GreenDAO.md)
 
 ### AFinal
 
-[AFinal Github](https://github.com/yangfuhai/afinal)
-
-单元测试：
-```
-public class AfinalTest extends AFinalCase {
-
-    FinalDb finalDb;
-
-    @Before
-    public void setUp() throws Exception {
-        Context context = getContext();
-
-        finalDb = FinalDb.create(context, false);
-    }
-
-    @Test
-    public void testSave() {
-        Bean bean = new Bean(uid, name);
-
-        finalDb.save(bean);
-
-        List<Bean> beanRS = finalDb.findAll(Bean.class);
-        Bean       b      = beanRS.get(0);
-
-        Assert.assertEquals("kkmike999", b.getName());
-    }
-}
-```
-
-[AFinal单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/afinal/AfinalTest.java)
+[AFinal单元测试示例](readme/AFinal.md)
 
 ### XUtils
 
-[XUtils3 Github](https://github.com/wyouflf/xUtils3)
-
-```
-@Table(name = "Parent")
-public class Parent {
-
-    @Column(name = "ID", isId = true, autoGen = true)
-    int id;
-
-    @Column(name = "name")
-    String name;
-}
-```
-
-单元测试：
-```
-public class XUtilsTest extends XUtilsCase {
-
-    protected DbManager db;
-
-    @Before
-    public void setUp() throws Exception {
-        x.Ext.setDebug(true); // 是否输出debug日志, 开启debug会影响性能.
-
-        // 本地数据的初始化
-        DbManager.DaoConfig daoConfig = new DbManager.DaoConfig().setDbName("xutils3_db") //设置数据库名
-                                                                 // 设置数据库版本,每次启动应用时将会检查该版本号,
-                                                                 // 发现数据库版本低于这里设置的值将进行数据库升级并触发DbUpgradeListener
-                                                                 .setDbVersion(1) //
-                                                                 // .setDbDir(new File("build/db"))//设置数据库.db文件存放的目录,默认为包名下databases目录下
-                                                                 .setAllowTransaction(true)//设置是否开启事务,默认为false关闭事务
-                                                                 .setTableCreateListener(new DbManager.TableCreateListener() {
-                                                                     @Override
-                                                                     public void onTableCreated(DbManager db, TableEntity<?> table) {
-
-                                                                     }
-                                                                 })//设置数据库创建时的Listener
-                                                                 .setDbUpgradeListener(new DbManager.DbUpgradeListener() {
-                                                                     @Override
-                                                                     public void onUpgrade(DbManager db, int oldVersion, int newVersion) {
-                                                                         //balabala...
-                                                                     }
-                                                                 });//设置数据库升级时的Listener,这里可以执行相关数据库表的相关修改,比如alter语句增加字段等
-
-        db = x.getDb(daoConfig);
-    }
-
-    @Test
-    public void testSave() throws DbException {
-        Parent parent = new Parent("name0");
-
-        db.save(parent);
-
-        Parent parent = db.selector(Parent.class)
-                          .where("name", "LIKE", "name0")
-                          .findFirst();
-
-        Assert.assertEquals("name0", parent.getName());
-    }
-}
-```
-
-[XUtils单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/xutils/XUtilsTest.java)
+[XUtils3单元测试示例](readme/XUtils.md)
 
 ### DbFlow
 
-DbFlow gradle配置，自行查阅：[DbFlow中文教程]( https://yumenokanata.gitbooks.io/dbflow-tutorials/content/index.html)。
-
-```
-@Table(database = DBFlowDatabase.class)
-public class UserModel extends BaseModel {
-    //自增ID
-    @Column
-    @PrimaryKey(autoincrement = true)
-    public Long   id;
-    @Column
-    public String name;
-    @Column
-    public int    sex;
-
-    public String getName() {
-        return name;
-    }
-
-    public int getSex() {
-        return sex;
-    }
-}
-```
-
-单元测试：
-```
-public class DbFlowTest extends DbFlowCase {
-
-    @Before
-    public void setUp() throws Exception {
-        FlowManager.init(new FlowConfig.Builder(getApplication()).build());
-
-        Assert.assertEquals(0, new Select(Method.count()).from(UserModel.class).count());
-    }
-
-    @Test
-    public void onInsert() {
-        UserModel people = new UserModel();
-
-        people.name = "张三";
-        people.sex = 1;
-        people.save();// 添加对象，一条一条保存
-
-        Assert.assertEquals(1, new Select(Method.count()).from(UserModel.class).count());
-    }
-}
-```
-
-[DbFlow单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/dbflow/DbFlowTest.java)
+[DbFlow单元测试示例](readme/DbFlow.md)
 
 ### SQL语句输出配置
 
@@ -329,6 +127,3 @@ KBUnitTest还**不支持子查询和联表查询**，作者有计划以后支持
 在广州生活，悦跑圈Android工程师，猥琐文艺码农。每天谋划砍死产品经理。喜欢科学、历史，玩玩投资，偶尔旅行。
 
 简书：[键盘男](http://www.jianshu.com/u/0ef3dc77079c)
-
-
-
