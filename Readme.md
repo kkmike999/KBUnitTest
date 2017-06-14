@@ -124,6 +124,8 @@ public class GreenDAOTest extends GreenDAOCase {
 }
 ```
 
+[GreenDAO单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/greenDAO/GreenDAOTest.java)
+
 ### AFinal
 
 [AFinal Github](https://github.com/yangfuhai/afinal)
@@ -154,6 +156,8 @@ public class AfinalTest extends AFinalCase {
     }
 }
 ```
+
+[AFinal单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/afinal/AfinalTest.java)
 
 ### XUtils
 
@@ -219,6 +223,8 @@ public class XUtilsTest extends XUtilsCase {
 }
 ```
 
+[XUtils单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/xutils/XUtilsTest.java)
+
 ### DbFlow
 
 DbFlow gradle配置，自行查阅：[DbFlow中文教程]( https://yumenokanata.gitbooks.io/dbflow-tutorials/content/index.html)。
@@ -269,6 +275,8 @@ public class DbFlowTest extends DbFlowCase {
 }
 ```
 
+[DbFlow单元测试示例](https://github.com/kkmike999/KBUnitTest/blob/master/app/src/test/java/net/kb/test/dbflow/DbFlowTest.java)
+
 ### SQL语句输出配置
 
 在运行单元测试时，可能会出现执行的SQLite语句：
@@ -295,6 +303,10 @@ KBUnitTest引用了作者另外的SharedPreference单元测试库 [SPTestFramewo
 
 ----
 
+## 不支持
+
+KBUnitTest还**不支持子查询和联表查询**，作者有计划以后支持。
+
 ## 兼容问题
 
 由于KBUnitTest重写了部分Android Api，例如`Log`、`TextUtils`，如果你的项目在`src/test/java`或者其他地方也重写了该类，可能会与KBUnitTest冲突。
@@ -305,7 +317,14 @@ KBUnitTest引用了作者另外的SharedPreference单元测试库 [SPTestFramewo
 
 作者希望，你能使用KBUnitTest执行更多测试用例，并把发现的bug在github issue提出。
 
+----
 
+## 关于作者
+
+我是键盘男。
+在广州生活，悦跑圈Android工程师，猥琐文艺码农。每天谋划砍死产品经理。喜欢科学、历史，玩玩投资，偶尔旅行。
+
+简书：[键盘男](http://www.jianshu.com/u/0ef3dc77079c)
 
 
 
