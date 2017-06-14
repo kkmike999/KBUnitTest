@@ -1,3 +1,7 @@
+## 0.2.1 内测版本
+
+- 修复ShadowResource寻找
+
 ## 0.2 内测版本
 
 Features:

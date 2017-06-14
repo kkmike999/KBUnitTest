@@ -159,7 +159,11 @@ public class ShadowResources {
             return mPackageName;
         }
 
-        String manifestPath = "build/intermediates/manifests/aapt/debug/AndroidManifest.xml";
+        String manifestPath = "build/intermediates/bundles/debug/AndroidManifest.xml";
+
+        if (!new File(manifestPath).exists()) {
+            manifestPath = "build/intermediates/bundles/release/AndroidManifest.xml";
+        }
 
         FileReader reader = new FileReader();
 

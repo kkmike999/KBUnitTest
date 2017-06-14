@@ -1,3 +1,5 @@
+![https://www.bintray.com/docs/images/bintray_badge_color.png](https://bintray.com/kkmike999/maven/kb_unit_test?source=watch)
+
 ## KBUnitTest介绍
 
 **KBUnitTest**是一款轻量级DAO单元测试框架，开发者可以通过此框架，在Android Studio运行SQLiteDatabase、SharedPreference单元测试。
@@ -24,7 +26,7 @@ allprojects {
 在module的**build.gradle**添加依赖：
 ```
 dependencies {
-    testCompile 'net.kb.test:kb_unit_test:0.2'
+    testCompile 'net.kb.test:kb_unit_test:0.2.1'
 }
 ```
 
