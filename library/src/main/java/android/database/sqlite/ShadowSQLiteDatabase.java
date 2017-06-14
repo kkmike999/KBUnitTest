@@ -1507,6 +1507,9 @@ public final class ShadowSQLiteDatabase extends SQLiteClosable {
                 }
                 sql.append(')');
 
+                // 替换boolean类型为int
+                bindArgs = KbSqlParser.replaceBoolean(bindArgs);
+
                 // 拼接VALUES语句
                 {
                     StringBuilder valuesSql = new StringBuilder();

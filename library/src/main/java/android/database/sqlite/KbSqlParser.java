@@ -47,6 +47,8 @@ public class KbSqlParser {
             return sql;
         }
 
+        bindArgs = replaceBoolean(bindArgs);
+
         try {
             KbSqlParserManager pm        = new KbSqlParserManager();
             Statement          statement = pm.parse(sql);
@@ -427,6 +429,32 @@ public class KbSqlParser {
         }
 
         return expressionSet;
+    }
+
+    /**
+     * 替换bindArgs的Boolean类型值为1或0（原数组不变，生成新数据返回）
+     *
+     * @param bindArgs
+     * @return
+     */
+    public static Object[] replaceBoolean(Object[] bindArgs) {
+        if (bindArgs == null || bindArgs.length == 0) {
+            return bindArgs;
+        }
+
+        Object[] arrays = new Object[bindArgs.length];
+
+        for (int i = 0; i < bindArgs.length; i++) {
+            Object arg = bindArgs[i];
+
+            if (arg instanceof Boolean) {
+                arrays[i] = ((boolean) arg) == true ? 1 : 0;
+            } else {
+                arrays[i] = bindArgs[i];
+            }
+        }
+
+        return arrays;
     }
 
     private static Expression parseToValue(Object arg) {

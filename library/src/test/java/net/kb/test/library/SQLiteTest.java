@@ -66,6 +66,21 @@ public class SQLiteTest {
     }
 
     @Test
+    public void testBoolean() {
+        db.execSQL("CREATE TABLE IF NOT EXISTS LevelExtraInfo ( id INTEGER PRIMARY KEY AUTOINCREMENT,passed NUMERIC)");
+
+        Object[] bindArgs = new Object[]{10, true};
+
+        db.execSQL("INSERT INTO LevelExtraInfo (id,passed) VALUES (?,?)", bindArgs);
+
+        Cursor cursor = db.rawQuery("SELECT * FROM LevelExtraInfo", null);
+        cursor.moveToNext();
+
+        Assert.assertEquals(10, cursor.getInt(0));
+        Assert.assertEquals("1", cursor.getString(1));
+    }
+
+    @Test
     public void testDeleted() throws SQLException {
         testInsert();
 

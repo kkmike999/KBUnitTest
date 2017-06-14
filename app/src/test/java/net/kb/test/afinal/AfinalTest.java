@@ -4,6 +4,7 @@ import android.content.Context;
 
 import net.kb.test.bean.Bean;
 import net.kb.test.bean.BeanV2;
+import net.kb.test.bean.BeanV3;
 import net.kb.test.library.testCase.AFinalCase;
 import net.tsz.afinal.FinalDb;
 
@@ -153,5 +154,30 @@ public class AfinalTest extends AFinalCase {
         // 只要测试通过即可
 
         Assert.assertEquals("name", beanV2.getName());
+    }
+
+    @Test
+    public void testBooleanField() {
+        BeanV3 bean = new BeanV3(1, "name0", true);
+
+        finalDb.save(bean);
+
+        BeanV3 beanV3 = finalDb.findAll(BeanV3.class).get(0);
+
+        Assert.assertEquals("name0", beanV3.getName());
+        Assert.assertEquals(true, beanV3.isPeople());
+
+        // 清除数据
+        finalDb.deleteByWhere(BeanV3.class, "");
+
+        // 保存isPeople=false
+        bean = new BeanV3(1, "name1", false);
+
+        finalDb.save(bean);
+
+        beanV3 = finalDb.findAll(BeanV3.class).get(0);
+
+        Assert.assertEquals("name1", beanV3.getName());
+        Assert.assertEquals(false, beanV3.isPeople());
     }
 }
