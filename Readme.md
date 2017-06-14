@@ -91,11 +91,6 @@ public class GreenDAOTest extends GreenDAOCase {
     private DaoSession mDaoSession;
     private UserDao    mUserDAO;
 
-    @BeforeClass
-    public static void beforeClass() {
-        DebugHook.setDebug(true);
-    }
-
     @Before
     public void setUp() throws Exception {
         Context context = getContext();
@@ -273,6 +268,42 @@ public class DbFlowTest extends DbFlowCase {
     }
 }
 ```
+
+### SQL语句输出配置
+
+在运行单元测试时，可能会出现执行的SQLite语句：
+
+![](http://i4.piimg.com/577986/586c7951b4a555b2.png)
+
+为了使用者清晰地知道，运行的单元测试执行了哪些SQL语句，KBUnitTest默认是输出SQL语句。如果你不需要，可以如下配置：
+
+```
+// 设置是否输出SQL语句
+DebugHook.setDebug(true);
+
+// 设置是否输出SQLite PRAGMA语句
+DebugHook.setPragmaDebug(false);
+```
+
+有的ORM框架，会自带SQL输出（例如Afinal），作者建议，打开KBUnitTest的SQL输出，关闭你ORM框架的SQL输出。由于ORM框架最终会调用Android Api的SQLiteDatabase，而KBUnitTest则是对Android Api进行改造，ORM框架必然会调用KBUnitTest的代码，因此ORM框架执行的SQL，都可以在KBUnitTest输出。
+
+关于PRAGMA语句，参考 [《SQLite PRAGMA》](http://www.runoob.com/sqlite/sqlite-pragma.html)。
+
+### SharedPreference单元测试
+
+KBUnitTest引用了作者另外的SharedPreference单元测试库 [SPTestFramework](https://github.com/kkmike999/SPTestFramework)。详细使用，可以查阅该库github。
+
+----
+
+## 兼容问题
+
+由于KBUnitTest重写了部分Android Api，例如`Log`、`TextUtils`，如果你的项目在`src/test/java`或者其他地方也重写了该类，可能会与KBUnitTest冲突。
+
+作者建议你，把KBUnitTest fork到你的仓库，修改后，发布到bintray，项目里直接引用修改后的库。如果笔者更新了KBUnitTest的代码，你可以在本地git pull KBUnitTest，合并后，再更改版本发布到bintray。
+
+## 提bug
+
+作者希望，你能使用KBUnitTest执行更多测试用例，并把发现的bug在github issue提出。
 
 
 
