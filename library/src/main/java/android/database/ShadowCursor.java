@@ -13,15 +13,15 @@ import java.util.List;
 public class ShadowCursor implements Cursor {
 
     // column name列表，必须按原来的顺序
-    List<String> mColums = new ArrayList<>();
+    List<String> mColumns = new ArrayList<>();
 
     // query结果集合
     List<List<Object>> mDatas = new ArrayList<>();
 
     int mPosition = -1;
 
-    public ShadowCursor(List<String> colums, List<List<Object>> datas) {
-        this.mColums = new ArrayList<>(colums);
+    public ShadowCursor(List<String> columns, List<List<Object>> datas) {
+        this.mColumns = new ArrayList<>(columns);
         this.mDatas = new ArrayList<>(datas);
     }
 
@@ -92,12 +92,12 @@ public class ShadowCursor implements Cursor {
 
     @Override
     public int getColumnIndex(String columnName) {
-        return mColums.indexOf(columnName);
+        return mColumns.indexOf(columnName);
     }
 
     @Override
     public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException {
-        if (!mColums.contains(columnName)) {
+        if (!mColumns.contains(columnName)) {
             throw new IllegalArgumentException("the column \'" + columnName + "\' does not exist");
         }
         return getColumnIndex(columnName);
@@ -105,17 +105,17 @@ public class ShadowCursor implements Cursor {
 
     @Override
     public String getColumnName(int columnIndex) {
-        return mColums.get(columnIndex);
+        return mColumns.get(columnIndex);
     }
 
     @Override
     public String[] getColumnNames() {
-        return mColums.toArray(new String[0]);
+        return mColumns.toArray(new String[0]);
     }
 
     @Override
     public int getColumnCount() {
-        return mColums.size();
+        return mColumns.size();
     }
 
     @Override
@@ -125,7 +125,8 @@ public class ShadowCursor implements Cursor {
 
     @Override
     public String getString(int columnIndex) {
-        return getObject(columnIndex).toString();
+        Object obj = getObject(columnIndex);
+        return obj == null ? null : obj.toString();
     }
 
     @Override

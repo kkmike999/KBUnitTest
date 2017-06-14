@@ -1,6 +1,7 @@
 ## 0.2.1 内测版本
 
 - 修复ShadowResource寻找
+- 修复ShadowCursor.getString() null问题
 
 ## 0.2 内测版本
 

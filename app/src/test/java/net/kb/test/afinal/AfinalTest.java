@@ -3,6 +3,7 @@ package net.kb.test.afinal;
 import android.content.Context;
 
 import net.kb.test.bean.Bean;
+import net.kb.test.bean.BeanV2;
 import net.kb.test.library.testCase.AFinalCase;
 import net.tsz.afinal.FinalDb;
 
@@ -138,5 +139,19 @@ public class AfinalTest extends AFinalCase {
         Bean bean = new Bean(uid, name);
 
         finalDb.save(bean);
+    }
+
+    @Test
+    public void testStaticField() {
+        BeanV2 bean = new BeanV2(1, "name");
+
+        finalDb.save(bean);
+
+        BeanV2 beanV2 = finalDb.findAll(BeanV2.class).get(0);
+
+        // afinal会抛出 java.lang.NoSuchMethodException: net.kb.test.bean.BeanV2.getTYPE_AD()
+        // 只要测试通过即可
+
+        Assert.assertEquals("name", beanV2.getName());
     }
 }
