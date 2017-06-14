@@ -4,6 +4,10 @@
 
 KBUnitTest支持原生SQLiteDatabase操作及GreenDAO、Afinal、XUtils、DbFlow第三方库。
 
+## 版本说明
+
+[CHANGELOG](CHANGELOG.md)
+
 ## 引用
 
 在工程**build.gradle**添加maven url:
@@ -28,12 +32,12 @@ dependencies {
 
 在Android Studio操作栏，`Run`->`EditConfigurations`，双击`Defaults`，选择`Android JUnit`窗口，找到`Working directory`参数栏，点击最右边的`...`选择`MODULE_DIR`。
 
-![Run->EditConfigurations](http://i1.buimg.com/577986/8f74617583d40318.png)
-![Android Junit](http://i1.buimg.com/577986/c7e3195e23d05542.png)
-![选择MODULE_DIR](http://i1.buimg.com/577986/a3f34c4abf2b3d29.png)
+![Run->EditConfigurations](http://linked-runner-file.b0.upaiyun.com/github/kb_unit_test/edit_configurations.png)
+![Android Junit](http://linked-runner-file.b0.upaiyun.com/github/kb_unit_test/configuration_android_junit.png)
+![选择MODULE_DIR](http://linked-runner-file.b0.upaiyun.com/github/kb_unit_test/module_dir.png)
 
 操作示范：
-![](http://i1.buimg.com/577986/9212b3b77bd0e7f0.gif)
+![](http://linked-runner-file.b0.upaiyun.com/github/kb_unit_test/module_dir_operation.gif)
 
 ## 使用方法
 
@@ -281,7 +285,7 @@ public class DbFlowTest extends DbFlowCase {
 
 在运行单元测试时，可能会出现执行的SQLite语句：
 
-![](http://i4.piimg.com/577986/586c7951b4a555b2.png)
+![](http://linked-runner-file.b0.upaiyun.com/github/kb_unit_test/sql_output.png)
 
 为了使用者清晰地知道，运行的单元测试执行了哪些SQL语句，KBUnitTest默认是输出SQL语句。如果你不需要，可以如下配置：
 
