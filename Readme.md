@@ -26,7 +26,7 @@ allprojects {
 在module的**build.gradle**添加依赖：
 ```
 dependencies {
-    testCompile 'net.kb.test:kb_unit_test:0.2.2'
+    testCompile 'net.kb.test:kb_unit_test:0.2.3'
 }
 ```
 
@@ -37,7 +37,7 @@ dependencies {
 (例如，工程引用了`org.jsoup:jsoup`和`com.android.support:support-annotations`)
 ```
 dependencies {
-    testCompile ('net.kb.test:kb_unit_test:0.2.2'){
+    testCompile ('net.kb.test:kb_unit_test:0.2.3'){
         transitive = true
 
         exclude module: 'jsoup', group: 'org.jsoup'

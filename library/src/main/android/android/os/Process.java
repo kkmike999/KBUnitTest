@@ -8,4 +8,8 @@ public class Process {
     public static final void setThreadPriority(int priority) throws IllegalArgumentException, SecurityException {
 
     }
+
+    public static final int myPid() {
+        return 1;
+    }
 }
