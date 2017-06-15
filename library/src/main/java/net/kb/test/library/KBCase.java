@@ -12,12 +12,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.DisplayMetrics;
 
-import net.kb.test.library.utils.DbPathUtils;
-
 import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 
-import java.io.File;
 import java.util.Map;
 
 /**
@@ -46,8 +43,7 @@ public class KBCase {
             // public Resources(AssetManager assets, DisplayMetrics metrics, Configuration config)
 
             // 删除、重新创建 临时数据库目录
-            deleteDbDir();
-            createDbDir();
+            deleteTempDir();
 
             ShadowResources shadowResources = new ShadowResources();
             Resources       resources       = new CGLibProxy().proxy(Resources.class, shadowResources, new Class[]{AssetManager.class, DisplayMetrics.class, Configuration.class}, new Object[]{null, null, null});
@@ -72,40 +68,18 @@ public class KBCase {
                 db.close();
 
                 String dbPath = db.getPath();
-
-                // 删除临时数据库文件
-                new File(dbPath).delete();
             }
 
             dbMap.clear();
 
-            deleteDbDir();
-        }
-
-        /**
-         * 创建数据库临时目录
-         */
-        private void createDbDir() {
-            File dbDir = new File(DbPathUtils.getDbDir());
-
-            if (!dbDir.exists()) {
-                dbDir.mkdirs();
-            }
+            deleteTempDir();
         }
 
         /**
          * 删除数据库
          */
-        private void deleteDbDir() {
-            File   dbDir = new File(DbPathUtils.getDbDir());
-            File[] files = dbDir.listFiles();
-
-            if (files != null) {
-                for (File file : files) {
-                    file.delete();
-                }
-                dbDir.delete();
-            }
+        private void deleteTempDir() {
+            ShadowContext.deleteAllTempDir();
         }
     };
 

@@ -1,62 +1,40 @@
-package android.content.res;
+package android.content;
 
 import android.annotation.TargetApi;
-import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.content.res.ShadowResources;
 import android.os.Build;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 
-import net.kb.test.library.BuildConfig;
-import net.kb.test.library.R;
-import net.kb.test.library.utils.RoboRunner;
+import net.kb.test.library.CGLibProxy;
 
-import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
-import org.robolectric.annotation.internal.DoNotInstrument;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by kkmike999 on 2017/05/26.
- * <p>
- * manifest = "build/intermediates/manifests/aapt/debug/AndroidManifest.xml"
+ * Created by kkmike999 on 2017/06/15.
  */
-@RunWith(RoboRunner.class)
-@Config(constants = BuildConfig.class)
-@DoNotInstrument
-public class RoboTest {
+public class ContextTest {
 
-    Resources resources;
-    Context   context;
+    Context       context;
+    ShadowContext shadowContext;
 
     @Before
     public void setUp() throws Exception {
-        context = RuntimeEnvironment.application;
-        resources = context.getResources();
+        Resources resources = new CGLibProxy().proxy(Resources.class, new ShadowResources(), new Class[]{AssetManager.class, DisplayMetrics.class, Configuration.class}, new Object[]{null, null, null});
+        context = new CGLibProxy().proxy(Context.class, shadowContext = new ShadowContext(resources));
     }
 
-    @Test
-    public void getStringArray() throws Exception {
-        String[] array = resources.getStringArray(R.array.arrayName);
-
-        Assert.assertEquals("item0", array[0]);
-        Assert.assertEquals("item1", array[1]);
-    }
-
-    @Test
-    public void getIntArray() {
-        int[] intArray = resources.getIntArray(R.array.intArray);
-
-        Assert.assertEquals(0, intArray[0]);
-        Assert.assertEquals(1, intArray[1]);
-
-        int[] intArrayNoItem = resources.getIntArray(R.array.intArrayNoItem);
-
-        Assert.assertEquals(0, intArrayNoItem.length);
+    @After
+    public void tearDown() throws Exception {
+        shadowContext.deleteAllTempDir();
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -89,9 +67,9 @@ public class RoboTest {
         System.out.println("\n-- fileList --\n");
 
         // 创建临时文件
-        File fileDir = new File(context.getFilesDir(), "tmp.txt");
-        fileDir.getParentFile().mkdirs();
-        fileDir.createNewFile();
+        File tmpFile = new File(context.getFilesDir(), "tmp.txt");
+        tmpFile.getParentFile().mkdirs();
+        tmpFile.createNewFile();
 
         for (String f : context.fileList()) {
             System.out.println(f);
@@ -105,6 +83,8 @@ public class RoboTest {
         for (String db : context.databaseList()) {
             System.out.println(db);
         }
+
+        System.out.println("\n-- getDatabasePath --\n");
 
         System.out.println(context.getDatabasePath("mydb"));
     }

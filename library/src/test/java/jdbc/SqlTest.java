@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,7 +19,9 @@ public class SqlTest {
 
     @Before
     public void setUp() throws Exception {
-        mConnection = DriverManager.getConnection("jdbc:sqlite:" + "build/test.dp");
+        new File("build/db/").mkdirs();
+
+        mConnection = DriverManager.getConnection("jdbc:sqlite:" + "build/db/test.dp");
         mConnection.setAutoCommit(false);
     }
 

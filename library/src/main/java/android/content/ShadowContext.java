@@ -10,10 +10,10 @@ import android.database.sqlite.ShadowSQLiteDatabase;
 import android.os.Build;
 import android.shadow.Shadow;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import net.kb.test.library.CGLibProxy;
-import net.kb.test.library.utils.DbPathUtils;
 import net.kkmike.sptest.SharedPreferencesHelper;
 
 import java.io.File;
@@ -24,6 +24,10 @@ import java.util.Map;
  * Created by kkmike999 on 2017/05/26.
  */
 public class ShadowContext implements Shadow {
+
+    public static final  String DB_PATH  = "build/db/";
+    private static final String DATA_DIR = "build/data/";
+    private static final String EXT_DIR  = "build/ext";
 
     private Resources resources;
     private Context   mockContext;
@@ -50,12 +54,106 @@ public class ShadowContext implements Shadow {
         return mockContext;
     }
 
-    public File getDatabasePath(String name) {
-        return new File("build/db");
-    }
-
     public AssetManager getAssets() {
         return new CGLibProxy().proxy(AssetManager.class, new ShadowAssetManager());
+    }
+
+    // 原生方法
+    public File getDatabasePath(String name) {
+        return staticGetDatabasePath(name);
+    }
+
+    private static File staticGetDatabasePath(String name) {
+        String path = DB_PATH + (DB_PATH.endsWith("/") ? "" : "/") + name + (name.endsWith(".db") ? "" : ".db");
+        return new File(path);
+    }
+
+    public String[] databaseList() {
+        File dbPath = new File(DB_PATH);
+        return dbPath.list();
+    }
+
+    public static String getDbDir() {
+        File file = new File(DB_PATH);
+        file.mkdirs();
+        return file.getPath();
+    }
+
+    public File getDataDir() {
+        File file = new File(DATA_DIR);
+        file.mkdirs();
+        return file;
+    }
+
+    public File getFilesDir() {
+        File file = new File(getDataDir(), "files");
+        file.mkdirs();
+        return file;
+    }
+
+    public File getFileStreamPath(String name) {
+        File file = new File(getFilesDir(), name);
+        file.mkdirs();
+        return file;
+    }
+
+    public File getCacheDir() {
+        File file = new File(getDataDir(), "cache");
+        file.mkdirs();
+        return file;
+    }
+
+    public File getCodeCacheDir() {
+        File file = new File(getDataDir(), "code_cache");
+        file.mkdirs();
+        return file;
+    }
+
+    public File getNoBackupFilesDir() {
+        File file = new File(getDataDir(), "no_backup");
+        file.mkdirs();
+        return file;
+    }
+
+    public File getExtDir() {
+        File ext = new File(EXT_DIR);
+        ext.mkdirs();
+        return ext;
+    }
+
+    public File getExternalCacheDir() {
+        File file = new File(EXT_DIR, "cache");
+        file.mkdirs();
+        return file;
+    }
+
+    @Nullable
+    public File getExternalFilesDir(@Nullable String type) {
+        File file = new File(EXT_DIR, "files/" + type);
+        file.mkdirs();
+        return file;
+    }
+
+    public String[] fileList() {
+        File filesDir = getFilesDir();
+        return filesDir.list();
+    }
+
+    public String getPackageResourcePath() {
+        return new File("").getPath();
+    }
+
+    public String getPackageCodePath() {
+        return new File("").getPath();
+    }
+
+    /**
+     * 删除临时数据库 & 数据库目录
+     */
+    public static void deleteAllTempDir() {
+        FileUtils.deletePath(DB_PATH);
+        FileUtils.deletePath(DATA_DIR);
+        FileUtils.deletePath(EXT_DIR);
     }
 
     /////////////////////////////   SQLiteDatabase    /////////////////////////////
@@ -74,7 +172,7 @@ public class ShadowContext implements Shadow {
         }
         // 创建数据库
         try {
-            String path = DbPathUtils.getDbPath(name);
+            String path = staticGetDatabasePath(name).getPath();
 
             ShadowSQLiteDatabase sdb = new ShadowSQLiteDatabase(path, 0, null);
             SQLiteDatabase       db  = new CGLibProxy().proxy(SQLiteDatabase.class, sdb);
@@ -94,7 +192,7 @@ public class ShadowContext implements Shadow {
 //        db.execSQL("DROP DATABASE " + name);
         db.close();
 
-        String path = DbPathUtils.getDbPath(name);
+        String path = getDatabasePath(name).getPath();
 
         new File(path).delete();
 
