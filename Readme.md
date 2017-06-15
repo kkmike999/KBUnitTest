@@ -123,6 +123,18 @@ KBUnitTest引用了作者另外的SharedPreference单元测试库 [SPTestFramewo
 
 ----
 
+## 对比Robolectric
+
+Robolectric是一款比较全面的Android单元测试框架，不仅能测SQLiteDatabase、SharedPreference，还能测Activity、Fragment等。
+
+但Robolectric缺点非常明显：配置麻烦，下载依赖慢，运行慢。
+
+KBUnitTest的优点，配置简单，运行快，但KBUnitTest仅支持测SQLiteDatabase、SharedPreference。
+
+(如果你继续使用Robolectric，作者建议你阅读[《加速Robolectric下载依赖库及原理剖析》](http://www.jianshu.com/p/a01628c3ea16))
+
+----
+
 ## 不支持
 
 KBUnitTest还**不支持子查询和联表查询**，作者有计划以后支持。
